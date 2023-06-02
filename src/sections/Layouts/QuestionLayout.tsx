@@ -4,7 +4,6 @@ import { Outlet } from 'react-router-dom';
 const QuestionLayout: React.FunctionComponent = () => {
   return (
     <>
-      <div></div>
       <div>
         <Outlet></Outlet>
       </div>

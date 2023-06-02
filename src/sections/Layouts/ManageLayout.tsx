@@ -5,6 +5,8 @@ import Sidebar from '../Sidebar';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import DeleteIcon from '@mui/icons-material/Delete';
 import StarIcon from '@mui/icons-material/Star';
+import useLoadUserData from '@/hooks/useLoadUserData';
+import useNavPage from '@/hooks/userNavPage';
 
 const ManageSideBarRoutes = [
   {
@@ -25,14 +27,16 @@ const ManageSideBarRoutes = [
 ];
 
 const ManageLayout: React.FunctionComponent = () => {
+  const { waitingUserData } = useLoadUserData();
+
+  useNavPage(waitingUserData);
+
   return (
     <>
       <div>
         <Header></Header>
         <Sidebar routes={ManageSideBarRoutes}></Sidebar>
-        <div className="px-40 pt-10">
-          <Outlet></Outlet>
-        </div>
+        <div className="px-40 pt-10">{<Outlet></Outlet>}</div>
       </div>
     </>
   );

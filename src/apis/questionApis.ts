@@ -1,5 +1,6 @@
 import { Page, PageParam } from '@/interface/base';
 import { IQuestionCard } from '@/interface/question.moudule';
+import { ComponentStateType } from '@/store/componentState';
 import { Delete, Get, Post, Put } from '@/utils/http';
 
 export enum QuestionApis {
@@ -16,6 +17,10 @@ export const getQuestionList = async (params: Partial<SearchOptions>) => {
   if (res) {
     return res;
   }
+};
+
+export const getQuestion = async (params: { id: string }) => {
+  return await Get<ComponentStateType>(`${QuestionApis.baseUrl}/:id`, params);
 };
 
 export const createQuestion = async (question: IQuestionCard) => {

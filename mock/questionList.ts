@@ -18,6 +18,49 @@ const questionData: any = Mock.mock({
   ],
 });
 
+const Random = Mock.Random;
+
+const componentList = [
+  {
+    fe_id: Random.id(),
+    type: 'questionTitle',
+    title: '标题',
+    props: {
+      text: '个人信息调研',
+      level: 1,
+      isCenter: false,
+    },
+  },
+  {
+    fe_id: Random.id(),
+    type: 'questionTitle',
+    title: '标题',
+    props: {
+      text: '一行标题',
+      level: 1,
+      isCenter: false,
+    },
+  },
+  {
+    fe_id: Random.id(),
+    type: 'questionInput',
+    title: '输入框',
+    props: {
+      title: '你的姓名',
+      placeholder: '请输入...',
+    },
+  },
+  {
+    fe_id: Random.id(),
+    type: 'questionInput',
+    title: '输入框',
+    props: {
+      title: '你的电话',
+      placeholder: '请输入...',
+    },
+  },
+];
+
 export default [
   {
     url: '/api/questionList',
@@ -67,6 +110,23 @@ export default [
         code: 200,
         messages: 'success',
         data: body,
+      };
+    },
+  },
+  {
+    url: '/api/question/:id',
+    method: 'get',
+    response(options) {
+      const { body } = options;
+      console.log('🚀 ~ file: questionList.ts:63 ~ response ~ options:', options);
+      questionData.list.push(body);
+      return {
+        code: 200,
+        messages: 'success',
+        data: {
+          title: Random.title(),
+          componentList,
+        },
       };
     },
   },

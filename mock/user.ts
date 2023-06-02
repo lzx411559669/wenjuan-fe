@@ -37,7 +37,6 @@ export default [
     url: '/api/user',
     method: 'get',
     response(config) {
-      console.log('🚀 ~ file: user.ts:40 ~ response ~ config:', config);
       return {
         code: 200,
         messages: 'success',

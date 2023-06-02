@@ -1,5 +1,6 @@
 import { getUserInfo } from '@/apis/userApis';
 import { RoutePathEnum } from '@/routes/routerEnum';
+import useUserState from '@/store/user';
 import { removeToken } from '@/utils/userToken';
 import { UserOutlined, DownOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
@@ -9,11 +10,13 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const UserInfo: React.FunctionComponent = (props) => {
   const nav = useNavigate();
-  const { data } = useRequest(getUserInfo);
 
-  const { username, nickname } = data || {};
+  const [{ username, nickname }, userStateActions] = useUserState();
+
+  //   const { username, nickname } = data || {};
 
   const logout = () => {
+    userStateActions.clearUser();
     removeToken();
     nav(RoutePathEnum.LOGIN);
   };
