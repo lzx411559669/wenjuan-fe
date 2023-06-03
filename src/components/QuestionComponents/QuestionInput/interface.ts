@@ -1,6 +1,8 @@
 export interface IQuestionTitleProps {
   title?: string;
   placeholder?: string;
+  onChange?: (newProps: IQuestionTitleProps) => void;
+  disabled?: boolean;
 }
 
 export const IQuestionTitlePropsDefault: IQuestionTitleProps = {

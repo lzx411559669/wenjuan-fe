@@ -30,18 +30,22 @@ const EditCanvas: React.FunctionComponent<IEditCanvasProps> = (props) => {
   return (
     <>
       <div className="min-h-full overflow-hidden bg-white">
-        {componentList.map((item, index) => {
-          const { fe_id, type } = item;
-          return (
-            <div
-              key={fe_id}
-              onClick={() => handleClick(fe_id)}
-              className={`component-wrapper ${fe_id === selectedId ? 'border-important' : ''}`}
-            >
-              <div className="pointer-events-none">{getComponent(item)}</div>
-            </div>
-          );
-        })}
+        {componentList
+          .filter((item) => !item.isHidden)
+          .map((item, index) => {
+            const { fe_id, type, isLocked } = item;
+            return (
+              <div
+                key={fe_id}
+                onClick={() => handleClick(fe_id)}
+                className={`component-wrapper ${fe_id === selectedId ? 'border-important' : ''} ${
+                  isLocked ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+              >
+                <div className="pointer-events-none">{getComponent(item)}</div>
+              </div>
+            );
+          })}
         {/* <div className="component-wrapper">
           <div className="pointer-events-none">
             <QuestionTitle></QuestionTitle>

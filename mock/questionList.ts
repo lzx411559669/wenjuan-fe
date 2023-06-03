@@ -25,6 +25,8 @@ const componentList = [
     fe_id: Random.id(),
     type: 'questionTitle',
     title: '标题',
+    isHidden: false,
+    isLocked: false,
     props: {
       text: '个人信息调研',
       level: 1,
@@ -35,6 +37,8 @@ const componentList = [
     fe_id: Random.id(),
     type: 'questionTitle',
     title: '标题',
+    isHidden: false,
+    isLocked: false,
     props: {
       text: '一行标题',
       level: 1,
@@ -45,6 +49,8 @@ const componentList = [
     fe_id: Random.id(),
     type: 'questionInput',
     title: '输入框',
+    isHidden: false,
+    isLocked: false,
     props: {
       title: '你的姓名',
       placeholder: '请输入...',
@@ -54,6 +60,8 @@ const componentList = [
     fe_id: Random.id(),
     type: 'questionInput',
     title: '输入框',
+    isHidden: false,
+    isLocked: false,
     props: {
       title: '你的电话',
       placeholder: '请输入...',
