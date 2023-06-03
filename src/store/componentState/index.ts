@@ -2,6 +2,8 @@ import { ComponentPropsType } from '@/components/QuestionComponents';
 import { useCallback, useMemo } from 'react';
 import { atom, useRecoilState } from 'recoil';
 import { produce } from 'immer';
+import { cloneDeep } from 'lodash';
+import { nanoid } from 'nanoid';
 
 //组件类型
 export type ComponentInfoType = {
@@ -16,6 +18,7 @@ export type ComponentInfoType = {
 export type ComponentStateType = {
   componentList: Array<ComponentInfoType>;
   selectedId: string;
+  copiedComponent: ComponentInfoType | null;
 };
 
 const state = atom({
@@ -23,6 +26,7 @@ const state = atom({
   default: {
     selectedId: '', //当前选中id
     componentList: [], //组件列表
+    copiedComponent: null,
   } as ComponentStateType,
 });
 
@@ -34,6 +38,10 @@ export type Actions = {
   removeSelectedComponent: () => void; //删除选中的组件
   changeComponentHidden: (feid: string, isHidden: boolean) => void;
   toggleComponentLocked: (feid: string) => void;
+  copySelectedComponent: () => void; //复制选中的组件,
+  pasteCopiedComponent: () => void; //粘贴选中的组件,
+  slectPrevComponent: () => void; //选择上一个组件
+  slectNextComponent: () => void; //选择下一个组件
 };
 
 const useComponentsState = (): [ComponentStateType, Actions, ComponentInfoType] => {
@@ -57,15 +65,7 @@ const useComponentsState = (): [ComponentStateType, Actions, ComponentInfoType] 
     (component: ComponentInfoType) => {
       setComponentsState(
         produce((draft) => {
-          const selectId = draft.selectedId;
-          const index = draft.componentList.findIndex((item) => item.fe_id === selectId);
-          if (index < 0) {
-            //如果未选中任何组件
-            draft.componentList.push(component);
-          } else {
-            //如果选中组件，则插入到index的后面
-            draft.componentList.splice(index + 1, 0, component);
-          }
+          insertNewComponent(draft, component);
         }),
       );
       //   setComponentsState((prev) => ({
@@ -144,6 +144,62 @@ const useComponentsState = (): [ComponentStateType, Actions, ComponentInfoType] 
     [setComponentsState, componentsState],
   );
 
+  const copySelectedComponent = useCallback(() => {
+    setComponentsState(
+      produce((draft) => {
+        const { selectedId, componentList } = draft;
+        const selectedComponent = componentList.find((item) => item.fe_id === selectedId);
+        if (selectedComponent) {
+          draft.copiedComponent = cloneDeep(selectedComponent);
+        }
+      }),
+    );
+  }, []);
+
+  const pasteCopiedComponent = useCallback(() => {
+    setComponentsState(
+      produce((draft) => {
+        const { copiedComponent } = draft;
+        if (copiedComponent) {
+          copiedComponent.fe_id = nanoid();
+          insertNewComponent(draft, copiedComponent);
+        }
+      }),
+    );
+  }, []);
+
+  const slectPrevComponent = useCallback(() => {
+    setComponentsState(
+      produce((draft) => {
+        const { selectedId, componentList } = draft;
+        const index = componentList.findIndex((item) => item.fe_id === selectedId);
+        if (index <= 0) {
+          //未选择，或者选中第一个
+          return;
+        }
+        draft.selectedId = componentList[index - 1].fe_id;
+      }),
+    );
+  }, []);
+
+  const slectNextComponent = useCallback(() => {
+    setComponentsState(
+      produce((draft) => {
+        const { selectedId, componentList } = draft;
+        const index = componentList.findIndex((item) => item.fe_id === selectedId);
+        if (index < 0) {
+          //未选择
+          return;
+        }
+        if (index + 1 === componentList.length) {
+          //选中最后一个
+          return;
+        }
+        draft.selectedId = componentList[index + 1].fe_id;
+      }),
+    );
+  }, []);
+
   const selectComponent = useMemo(() => {
     return (
       componentsState.componentList.find((item) => item.fe_id === componentsState.selectedId) || {}
@@ -160,6 +216,10 @@ const useComponentsState = (): [ComponentStateType, Actions, ComponentInfoType] 
       removeSelectedComponent,
       changeComponentHidden,
       toggleComponentLocked,
+      copySelectedComponent,
+      pasteCopiedComponent,
+      slectPrevComponent,
+      slectNextComponent,
     },
     selectComponent as ComponentInfoType,
   ];
@@ -188,4 +248,17 @@ const getNextSelectedId = (fe_id: string, componentList: ComponentInfoType[]) =>
   }
   //不是最后一个，选中下一个
   return visibleComponentList[index + 1].fe_id;
+};
+
+const insertNewComponent = (draft: ComponentStateType, newComponent: ComponentInfoType) => {
+  const selectId = draft.selectedId;
+  const index = draft.componentList.findIndex((item) => item.fe_id === selectId);
+  if (index < 0) {
+    //如果未选中任何组件
+    draft.componentList.push(newComponent);
+  } else {
+    //如果选中组件，则插入到index的后面
+    draft.componentList.splice(index + 1, 0, newComponent);
+  }
+  draft.selectedId = newComponent.fe_id;
 };

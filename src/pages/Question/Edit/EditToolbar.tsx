@@ -1,5 +1,5 @@
 import useComponentsState from '@/store/componentState';
-import { EyeInvisibleOutlined, LockOutlined } from '@ant-design/icons';
+import { BlockOutlined, CopyOutlined, EyeInvisibleOutlined, LockOutlined } from '@ant-design/icons';
 import { DeleteOutline } from '@mui/icons-material';
 import { Space, Button, Tooltip } from 'antd';
 import * as React from 'react';
@@ -7,7 +7,7 @@ import * as React from 'react';
 interface IEditToolbarProps {}
 
 const EditToolbar: React.FunctionComponent<IEditToolbarProps> = (props) => {
-  const [{ selectedId }, actions, selectComponent] = useComponentsState();
+  const [{ selectedId, copiedComponent }, actions, selectComponent] = useComponentsState();
   //   debugger;
   const { isLocked } = selectComponent;
   const handlerDelete = () => {
@@ -20,6 +20,14 @@ const EditToolbar: React.FunctionComponent<IEditToolbarProps> = (props) => {
 
   const handlerLock = () => {
     actions.toggleComponentLocked(selectedId);
+  };
+
+  const copy = () => {
+    actions.copySelectedComponent();
+  };
+
+  const paste = () => {
+    actions.pasteCopiedComponent();
   };
   return (
     <>
@@ -36,6 +44,17 @@ const EditToolbar: React.FunctionComponent<IEditToolbarProps> = (props) => {
             type={isLocked ? 'primary' : 'default'}
             icon={<LockOutlined />}
             onClick={handlerLock}
+          ></Button>
+        </Tooltip>
+        <Tooltip title="复制">
+          <Button shape="circle" icon={<CopyOutlined />} onClick={copy}></Button>
+        </Tooltip>
+        <Tooltip title="粘贴">
+          <Button
+            shape="circle"
+            disabled={copiedComponent === null}
+            icon={<BlockOutlined />}
+            onClick={paste}
           ></Button>
         </Tooltip>
       </Space>

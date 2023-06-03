@@ -1,6 +1,7 @@
 import { getComponentConfByType } from '@/components/QuestionComponents';
 import QuestionInput from '@/components/QuestionComponents/QuestionInput/Component';
 import QuestionTitle from '@/components/QuestionComponents/QuestionTitle/Component';
+import useBindCanvasKeyPress from '@/hooks/useBindCanvasKeyPress';
 import useLoadQuestionData from '@/hooks/useLoadQuestionData';
 import useComponentsState, { ComponentInfoType } from '@/store/componentState';
 import * as React from 'react';
@@ -21,6 +22,8 @@ const EditCanvas: React.FunctionComponent<IEditCanvasProps> = (props) => {
   const { actions } = useLoadQuestionData();
 
   const [componentsState] = useComponentsState();
+
+  useBindCanvasKeyPress();
 
   const { componentList, selectedId } = componentsState;
 

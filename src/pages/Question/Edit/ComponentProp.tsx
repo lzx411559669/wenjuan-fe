@@ -29,7 +29,6 @@ const ComponentProp: React.FunctionComponent<IComponentPropProps> = () => {
     }
     const { fe_id } = selectedPropComponent;
     actions.changeComponentProps(fe_id, newProps);
-    console.log('🚀 ~ file: ComponentProp.tsx:23 ~ changeProps ~ newProps:', newProps);
   };
   return <PropComponent {...newProps} onChange={changeProps}></PropComponent>;
 };
