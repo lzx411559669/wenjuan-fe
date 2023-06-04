@@ -1,13 +1,12 @@
 import Component from './Component';
 import PropComponent from './PropComponent';
-import { IQuestionInputPropsDefault } from './interface';
-
+import { QuestionCheckboxDefaultProps } from './interface';
 export * from './interface';
 
 export default {
-  title: '输入框',
-  type: 'questionInput',
+  title: '多选',
+  type: 'questionCheckbox',
   Component,
   PropComponent,
-  defaultProps: IQuestionInputPropsDefault,
+  defaultProps: QuestionCheckboxDefaultProps,
 };

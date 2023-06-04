@@ -1,10 +1,10 @@
 import { Input, Typography } from 'antd';
 import * as React from 'react';
-import { IQuestionTitleProps, IQuestionTitlePropsDefault } from './interface';
+import { IQuestionInputProps, IQuestionInputPropsDefault } from './interface';
 const { Paragraph } = Typography;
 
-const QuestionTitle: React.FunctionComponent<IQuestionTitleProps> = (props) => {
-  const { title, placeholder } = { ...IQuestionTitlePropsDefault, ...props };
+const QuestionTitle: React.FunctionComponent<IQuestionInputProps> = (props) => {
+  const { title, placeholder } = { ...IQuestionInputPropsDefault, ...props };
   return (
     <>
       <Paragraph strong>{title}</Paragraph>

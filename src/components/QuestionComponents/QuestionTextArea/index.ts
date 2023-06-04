@@ -1,13 +1,13 @@
 import Component from './Component';
 import PropComponent from './PropComponent';
-import { IQuestionInputPropsDefault } from './interface';
+import { QuestionTextareaPropsDefault } from './interface';
 
 export * from './interface';
 
 export default {
-  title: '输入框',
-  type: 'questionInput',
+  title: '多行输入框',
+  type: 'questionTextarea',
   Component,
   PropComponent,
-  defaultProps: IQuestionInputPropsDefault,
+  defaultProps: QuestionTextareaPropsDefault,
 };

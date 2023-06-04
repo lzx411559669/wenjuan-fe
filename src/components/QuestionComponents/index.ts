@@ -1,8 +1,19 @@
-import QuestionInputConf, { IQuestionTitleProps } from './QuestionInput';
+import QuestionInputConf, { IQuestionInputProps } from './QuestionInput';
 import QuestionTitleConf, { QuestionTitilePropsType } from './QuestionTitle';
+import QuestionParagraphConf, { QuestionParagraphPropsType } from './QuestionParagraph';
+import QuestionInfoConf, { QuestionInfoPropsType } from './QuestionInfo';
+import QuestionTextareaConf, { QuestionTextareaProps } from './QuestionTextArea';
+import QuestionRadioConf, { QuestionRadioPropsType } from './QuestionRadio';
+import QuestionCheckboxConf, { QuestionCheckboxPropsType } from './QuestionCheckbox';
 
 //各个组件的prop type
-export type ComponentPropsType = QuestionTitilePropsType & IQuestionTitleProps;
+export type ComponentPropsType = QuestionTitilePropsType &
+  IQuestionInputProps &
+  QuestionParagraphPropsType &
+  QuestionInfoPropsType &
+  QuestionTextareaProps &
+  QuestionRadioPropsType &
+  QuestionCheckboxPropsType;
 
 //统一，组件的配置
 export type ComponentConfType = {
@@ -13,19 +24,27 @@ export type ComponentConfType = {
   defaultProps: ComponentPropsType;
 };
 //全部组件配置的列表
-const componentConfList: ComponentConfType[] = [QuestionInputConf, QuestionTitleConf];
+const componentConfList: ComponentConfType[] = [
+  QuestionInputConf,
+  QuestionTitleConf,
+  QuestionParagraphConf,
+  QuestionInfoConf,
+  QuestionTextareaConf,
+  QuestionRadioConf,
+  QuestionCheckboxConf,
+];
 
 //组件分组
 export const componentConfGroup = [
   {
     groupId: 'text',
     groupName: '文本显示',
-    components: [QuestionTitleConf],
+    components: [QuestionInfoConf, QuestionTitleConf, QuestionParagraphConf],
   },
   {
     groupId: 'input',
     groupName: '用户输入',
-    components: [QuestionInputConf],
+    components: [QuestionInputConf, QuestionTextareaConf, QuestionRadioConf, QuestionCheckboxConf],
   },
 ];
 export function getComponentConfByType(type: string) {

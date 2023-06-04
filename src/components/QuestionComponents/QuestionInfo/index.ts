@@ -1,13 +1,13 @@
 import Component from './Component';
 import PropComponent from './PropComponent';
-import { IQuestionInputPropsDefault } from './interface';
+import { QuestionInfoDefaultPropsType } from './interface';
 
 export * from './interface';
 
 export default {
-  title: '输入框',
-  type: 'questionInput',
+  title: '问卷信息',
+  type: 'questionInfo',
   Component,
   PropComponent,
-  defaultProps: IQuestionInputPropsDefault,
+  defaultProps: QuestionInfoDefaultPropsType,
 };
