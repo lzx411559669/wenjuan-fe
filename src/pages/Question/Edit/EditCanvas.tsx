@@ -1,3 +1,5 @@
+import SortableContainer from '@/components/DragSortable/SortableContainer';
+import SortbaleItem from '@/components/DragSortable/SortableItem';
 import { getComponentConfByType } from '@/components/QuestionComponents';
 import QuestionInput from '@/components/QuestionComponents/QuestionInput/Component';
 import QuestionTitle from '@/components/QuestionComponents/QuestionTitle/Component';
@@ -30,37 +32,36 @@ const EditCanvas: React.FunctionComponent<IEditCanvasProps> = (props) => {
   const handleClick = (fe_id: string) => {
     actions.changeSelectedId(fe_id);
   };
+  const sortableItems = componentList
+    .filter((item) => !item.isHidden)
+    .map((c) => ({ ...c, id: c.fe_id }));
+  //拖拽借宿
+  const onDragEnd = (items: any) => {
+    actions.resetComponents(items);
+  };
   return (
-    <>
+    <SortableContainer items={sortableItems} onDragEnd={onDragEnd}>
       <div className="min-h-full overflow-hidden bg-white">
         {componentList
           .filter((item) => !item.isHidden)
           .map((item, index) => {
             const { fe_id, type, isLocked } = item;
             return (
-              <div
-                key={fe_id}
-                onClick={() => handleClick(fe_id)}
-                className={`component-wrapper ${fe_id === selectedId ? 'border-important' : ''} ${
-                  isLocked ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
-              >
-                <div className="pointer-events-none">{getComponent(item)}</div>
-              </div>
+              <SortbaleItem id={fe_id} key={fe_id}>
+                <div
+                  key={fe_id}
+                  onClick={() => handleClick(fe_id)}
+                  className={`component-wrapper ${fe_id === selectedId ? 'border-important' : ''} ${
+                    isLocked ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  <div className="pointer-events-none">{getComponent(item)}</div>
+                </div>
+              </SortbaleItem>
             );
           })}
-        {/* <div className="component-wrapper">
-          <div className="pointer-events-none">
-            <QuestionTitle></QuestionTitle>
-          </div>
-        </div>
-        <div className="component-wrapper">
-          <div className="pointer-events-none">
-            <QuestionInput></QuestionInput>
-          </div>
-        </div> */}
       </div>
-    </>
+    </SortableContainer>
   );
 };
 

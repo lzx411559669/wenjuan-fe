@@ -1,6 +1,6 @@
 import { ComponentPropsType } from '@/components/QuestionComponents';
-import { useCallback, useMemo } from 'react';
-import { atom, useRecoilState } from 'recoil';
+import { useCallback, useEffect, useMemo } from 'react';
+import { RecoilState, atom, useRecoilCallback, useRecoilState } from 'recoil';
 import { produce } from 'immer';
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid';
@@ -21,14 +21,28 @@ export type ComponentStateType = {
   copiedComponent: ComponentInfoType | null;
 };
 
-const state = atom({
+const state = atom<ComponentStateType>({
   key: 'componentsState',
   default: {
     selectedId: '', //当前选中id
     componentList: [], //组件列表
     copiedComponent: null,
-  } as ComponentStateType,
+  },
 });
+
+const undoStackState = atom<any[]>({
+  key: 'undoStackState',
+  default: [],
+});
+
+const redoStackState = atom<any[]>({
+  key: 'redoStackState',
+  default: [],
+});
+
+/**
+ * 定义actions
+ */
 
 export type Actions = {
   resetComponents: (componentList: Array<ComponentInfoType>) => void;
@@ -42,14 +56,24 @@ export type Actions = {
   pasteCopiedComponent: () => void; //粘贴选中的组件,
   slectPrevComponent: () => void; //选择上一个组件
   slectNextComponent: () => void; //选择下一个组件
+  changeComponentTitle: (feid: string, title: string) => void; //修改组件标题
+  handleUndo: () => void;
+  handleRedo: () => void;
 };
 
 const useComponentsState = (): [ComponentStateType, Actions, ComponentInfoType] => {
   const [componentsState, setComponentsState] = useRecoilState<ComponentStateType>(state);
-
+  const [undoStack, setUndoStack] = useRecoilState(undoStackState);
+  const [redoStack, setRedoStack] = useRecoilState(redoStackState);
   const resetComponents = useCallback(
     (componentList: Array<ComponentInfoType>) => {
       setComponentsState((prev) => ({ ...prev, componentList }));
+      console.log(
+        '🚀 ~ file: index.ts:73 ~ useComponentsState ~ componentsState:',
+        componentsState,
+      );
+
+      setUndoStack((prev) => [...prev, componentsState]);
     },
     [setComponentsState, componentsState],
   );
@@ -68,6 +92,7 @@ const useComponentsState = (): [ComponentStateType, Actions, ComponentInfoType] 
           insertNewComponent(draft, component);
         }),
       );
+      setUndoStack((prev) => [...prev, componentsState]);
       //   setComponentsState((prev) => ({
       //     ...prev,
       //     componentList: [...prev.componentList, component],
@@ -200,6 +225,36 @@ const useComponentsState = (): [ComponentStateType, Actions, ComponentInfoType] 
     );
   }, []);
 
+  const changeComponentTitle = useCallback((fe_id: string, title: string) => {
+    setComponentsState(
+      produce((draft) => {
+        const { selectedId, componentList } = draft;
+        const com = componentList.find((item) => item.fe_id === fe_id);
+        if (com) {
+          com.title = title;
+        }
+      }),
+    );
+  }, []);
+
+  //撤销，取出undoStack最后一个元素，设置setComponentsState
+  const handleUndo = useRecoilCallback(({ set }) => () => {
+    const lastValue = undoStack[undoStack.length - 1];
+    if (lastValue !== undefined) {
+      setUndoStack(undoStack.slice(0, -1));
+      setComponentsState(lastValue);
+    }
+  });
+
+  const handleRedo = useRecoilCallback(({ set }) => () => {
+    const nextValue = redoStack.slice(-1)[0];
+    if (nextValue !== undefined) {
+      setComponentsState(nextValue);
+      setRedoStack(redoStack.slice(0, -1));
+      setUndoStack([...undoStack, componentsState]);
+    }
+  });
+
   const selectComponent = useMemo(() => {
     return (
       componentsState.componentList.find((item) => item.fe_id === componentsState.selectedId) || {}
@@ -220,6 +275,9 @@ const useComponentsState = (): [ComponentStateType, Actions, ComponentInfoType] 
       pasteCopiedComponent,
       slectPrevComponent,
       slectNextComponent,
+      changeComponentTitle,
+      handleUndo,
+      handleRedo,
     },
     selectComponent as ComponentInfoType,
   ];

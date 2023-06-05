@@ -1,5 +1,15 @@
 import useComponentsState from '@/store/componentState';
-import { BlockOutlined, CopyOutlined, EyeInvisibleOutlined, LockOutlined } from '@ant-design/icons';
+import {
+  BlockOutlined,
+  CopyOutlined,
+  DownOutlined,
+  EyeInvisibleOutlined,
+  LockOutlined,
+  RedoOutlined,
+  UndoOutlined,
+  UpOutlined,
+} from '@ant-design/icons';
+import { arrayMove } from '@dnd-kit/sortable';
 import { DeleteOutline } from '@mui/icons-material';
 import { Space, Button, Tooltip } from 'antd';
 import * as React from 'react';
@@ -7,7 +17,13 @@ import * as React from 'react';
 interface IEditToolbarProps {}
 
 const EditToolbar: React.FunctionComponent<IEditToolbarProps> = (props) => {
-  const [{ selectedId, copiedComponent }, actions, selectComponent] = useComponentsState();
+  const [{ selectedId, copiedComponent, componentList }, actions, selectComponent] =
+    useComponentsState();
+  const componentLength = componentList.length;
+  const selectedIndex = componentList.findIndex((item) => item.fe_id === selectedId);
+  const isFirst = selectedIndex <= 0;
+  const isLast = selectedIndex >= componentLength - 1;
+
   //   debugger;
   const { isLocked } = selectComponent;
   const handlerDelete = () => {
@@ -28,6 +44,21 @@ const EditToolbar: React.FunctionComponent<IEditToolbarProps> = (props) => {
 
   const paste = () => {
     actions.pasteCopiedComponent();
+  };
+
+  const up = () => {
+    actions.resetComponents(arrayMove(componentList, selectedIndex, selectedIndex - 1));
+  };
+
+  const down = () => {
+    actions.resetComponents(arrayMove(componentList, selectedIndex, selectedIndex + 1));
+  };
+
+  const undo = () => {
+    actions.handleUndo();
+  };
+  const redo = () => {
+    actions.handleUndo();
   };
   return (
     <>
@@ -56,6 +87,18 @@ const EditToolbar: React.FunctionComponent<IEditToolbarProps> = (props) => {
             icon={<BlockOutlined />}
             onClick={paste}
           ></Button>
+        </Tooltip>
+        <Tooltip title="上移">
+          <Button shape="circle" disabled={isFirst} icon={<UpOutlined />} onClick={up}></Button>
+        </Tooltip>
+        <Tooltip title="下移">
+          <Button shape="circle" disabled={isLast} icon={<DownOutlined />} onClick={down}></Button>
+        </Tooltip>
+        <Tooltip title="撤销">
+          <Button shape="circle" icon={<UndoOutlined />} onClick={undo}></Button>
+        </Tooltip>
+        <Tooltip title="重做">
+          <Button shape="circle" icon={<RedoOutlined />} onClick={redo}></Button>
         </Tooltip>
       </Space>
     </>

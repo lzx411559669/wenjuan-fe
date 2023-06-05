@@ -132,7 +132,11 @@ export default [
         code: 200,
         messages: 'success',
         data: {
-          title: Random.title(),
+          id: Random.id(),
+          title: Random.title(5),
+          js: '',
+          css: '',
+          desc: '页面描述',
           componentList,
         },
       };

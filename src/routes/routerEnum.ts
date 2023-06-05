@@ -11,9 +11,9 @@ export enum RoutePathEnum {
 
   MANAGE_TRASH = '/mange/trash',
 
-  QUESTION_EDIT = '/question/edit/:id',
+  QUESTION_EDIT = '/question/edit/',
 
-  QUESTION_STAT = '/question/stat/:id',
+  QUESTION_STAT = '/question/stat/',
 
   NOT_FOUND = '*',
 }

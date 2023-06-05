@@ -6,4 +6,5 @@ export interface IQuestionCard {
   answerCount: number;
   createAt: string;
   isDelete: boolean;
+  componentList?: any[];
 }

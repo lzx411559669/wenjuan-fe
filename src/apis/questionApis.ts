@@ -1,6 +1,7 @@
 import { Page, PageParam } from '@/interface/base';
 import { IQuestionCard } from '@/interface/question.moudule';
 import { ComponentStateType } from '@/store/componentState';
+import { PageInfoStateType } from '@/store/pageInfoState';
 import { Delete, Get, Post, Put } from '@/utils/http';
 
 export enum QuestionApis {
@@ -20,7 +21,7 @@ export const getQuestionList = async (params: Partial<SearchOptions>) => {
 };
 
 export const getQuestion = async (params: { id: string }) => {
-  return await Get<ComponentStateType>(`${QuestionApis.baseUrl}/:id`, params);
+  return await Get<ComponentStateType & PageInfoStateType>(`${QuestionApis.baseUrl}/:id`, params);
 };
 
 export const createQuestion = async (question: IQuestionCard) => {
@@ -30,11 +31,16 @@ export const createQuestion = async (question: IQuestionCard) => {
   }
 };
 
-export const updateQuestion = async (params: { id: string }, question: IQuestionCard) => {
-  const res = await Put<IQuestionCard>(`${QuestionApis.baseUrl}/:id`, params, question);
-  if (res) {
-    return res;
-  }
+export const updateQuestion = async (params: { id: string }, question: Partial<IQuestionCard>) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(async () => {
+      const res = await Put<IQuestionCard>(`${QuestionApis.baseUrl}/:id`, params, question);
+      resolve(res);
+    }, 1000);
+  });
+  // if (res) {
+  //   return res;
+  // }
 };
 
 export const duplicateQuestion = async (params: { id: string }) => {
