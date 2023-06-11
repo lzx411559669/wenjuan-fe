@@ -112,7 +112,7 @@ const QuestionCard: React.FunctionComponent<PropsType> = (props: PropsType) => {
               <Button
                 disabled={isPublish}
                 variant="text"
-                onClick={() => nav(RoutePathEnum.MANAGE_STAR)}
+                onClick={() => nav(`${RoutePathEnum.QUESTION_STAT}${_id}`)}
                 startIcon={<StackedLineChartIcon />}
               >
                 数据统计

@@ -20,9 +20,9 @@ const questionData: any = Mock.mock({
 
 const Random = Mock.Random;
 
-const componentList = [
+export const componentList = [
   {
-    fe_id: Random.id(),
+    fe_id: "c1",
     type: 'questionTitle',
     title: '标题',
     isHidden: false,
@@ -34,7 +34,7 @@ const componentList = [
     },
   },
   {
-    fe_id: Random.id(),
+    fe_id: "c2",
     type: 'questionTitle',
     title: '标题',
     isHidden: false,
@@ -46,7 +46,7 @@ const componentList = [
     },
   },
   {
-    fe_id: Random.id(),
+    fe_id: "c3",
     type: 'questionInput',
     title: '输入框',
     isHidden: false,
@@ -57,7 +57,7 @@ const componentList = [
     },
   },
   {
-    fe_id: Random.id(),
+    fe_id: "c4",
     type: 'questionInput',
     title: '输入框',
     isHidden: false,
@@ -65,6 +65,61 @@ const componentList = [
     props: {
       title: '你的电话',
       placeholder: '请输入...',
+    },
+  },
+  {
+    fe_id: "c5",
+    type: 'questionTextarea',
+    title: '输入框',
+    isHidden: false,
+    isLocked: false,
+    props: {
+      title: '个人描述',
+      placeholder: '请输入...',
+    },
+  },
+  {
+    fe_id: "c6",
+    type: 'questionRadio',
+    title: '输入框',
+    isHidden: false,
+    isLocked: false,
+    props: {
+      title: '单选标题',
+      placeholder: '请输入...',
+      options: [
+        {
+          label: '选项1',
+          value: '选项1'
+        },
+        {
+          label: '选项2',
+          value: '选项2'
+        }
+      ]
+    },
+  },
+  {
+    fe_id:"c7",
+    type: 'questionCheckbox',
+    title: '多选标题',
+    isHidden: false,
+    isLocked: false,
+    props: {
+      title: '技术栈',
+      placeholder: '请输入...',
+      options: [
+        {
+          label: '选项1',
+          value: '选项1',
+          checked: true,
+        },
+        {
+          label: '选项2',
+          value: '选项2',
+          checked: false,
+        }
+      ]
     },
   },
 ];
@@ -112,7 +167,6 @@ export default [
     method: 'post',
     response(options) {
       const { body } = options;
-      console.log('🚀 ~ file: questionList.ts:63 ~ response ~ options:', options);
       questionData.list.push(body);
       return {
         code: 200,
@@ -126,7 +180,6 @@ export default [
     method: 'get',
     response(options) {
       const { body } = options;
-      console.log('🚀 ~ file: questionList.ts:63 ~ response ~ options:', options);
       questionData.list.push(body);
       return {
         code: 200,

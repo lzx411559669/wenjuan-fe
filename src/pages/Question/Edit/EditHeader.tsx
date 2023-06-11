@@ -120,7 +120,7 @@ const TitleElem: React.FC = () => {
   return (
     <>
       <Space>
-        <h1 className="mb-0  text-lg font-bold">{pageInfoState.title}</h1>
+        <h1 className="mb-0  text-lg font-bold text-black">{pageInfoState.title}</h1>
         <Button
           type="text"
           onClick={() => setEditState(true)}

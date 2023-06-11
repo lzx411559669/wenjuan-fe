@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev": "vite --force",
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "https-preview": "serve dist",
@@ -51,6 +51,7 @@
     "react-helmet-async": "^1.3.0",
     "react-hotkeys-hook": "^3.4.7",
     "react-router-dom": "^6.4.1",
+    "recharts": "^2.6.2",
     "recoil": "^0.7.5",
     "sass": "^1.62.1"
   },
