@@ -1,5 +1,5 @@
 import { EditOutlined, LeftOutlined, LoadingOutlined } from '@ant-design/icons';
-import { Button, Input, Space, Typography, message } from 'antd';
+import { Button, Input, Space, message } from 'antd';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditToolbar from './EditToolbar';
@@ -8,8 +8,6 @@ import useComponentsState from '@/store/componentState';
 import { useKeyPress, useRequest, useDebounceEffect } from 'ahooks';
 import { updateQuestion } from '@/apis/questionApis';
 import { RoutePathEnum } from '@/routes/routerEnum';
-
-const { Title } = Typography;
 
 interface IEditHeaderProps {}
 

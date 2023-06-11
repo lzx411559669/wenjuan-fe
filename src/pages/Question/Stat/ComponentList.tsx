@@ -1,5 +1,5 @@
 import { getComponentConfByType } from '@/components/QuestionComponents';
-import useComponentsState, { ComponentInfoType } from '@/store/componentState';
+import { ComponentInfoType } from '@/store/componentState';
 import * as React from 'react';
 
 interface IComponentListProps {

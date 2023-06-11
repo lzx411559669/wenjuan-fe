@@ -62,6 +62,8 @@ const data = [
 
 const ChartStat: React.FunctionComponent<IChartStatProps> = (props) => {
   const { selectedComponentId, selectedComponentType } = props;
+  console.log("🚀 ~ file: ChartStat.tsx:65 ~ selectedComponentType:", selectedComponentType)
+  console.log("🚀 ~ file: ChartStat.tsx:65 ~ selectedComponentId:", selectedComponentId)
   return (
     <div className='w-[450px] h-[300px]'>
       <ResponsiveContainer width="100%" height="100%">

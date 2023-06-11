@@ -22,8 +22,6 @@ const QuestionCard: React.FunctionComponent<PropsType> = (props: PropsType) => {
 
   const [isStarState, setIsStarState] = React.useState<boolean>(isStar);
 
-  const copyQuestion = () => {};
-
   const deleteQuestionConfirm = () => {
     Modal.confirm({
       title: '确定要删除此问卷吗？',
