@@ -15,7 +15,7 @@ interface IPageStatProps {
 }
 
 const PageStat: React.FunctionComponent<IPageStatProps> = (props) => {
-  const { selectedId, setSelectedId } = props;
+  const { selectedId, setSelectedId, setSelectedComponentType } = props;
   const nav = useNavigate();
   const { id = '' } = useParams();
 
@@ -51,7 +51,13 @@ const PageStat: React.FunctionComponent<IPageStatProps> = (props) => {
     return componentList.map((com) => {
       return {
         title: (
-          <div onClick={() => setSelectedId(com.fe_id)} className=" cursor-pointer">
+          <div
+            onClick={() => {
+              setSelectedId(com.fe_id);
+              setSelectedComponentType(com.type);
+            }}
+            className=" cursor-pointer"
+          >
             <span className={selectedId === com.fe_id ? ' text-blue-500' : ''}>
               {com.props.title || com.title}
             </span>

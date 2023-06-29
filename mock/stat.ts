@@ -31,6 +31,34 @@ export default [
       };
     },
   },
+  //获取单个组件的统计汇总
+  {
+    url: '/api/stat/:questionId/:componentId',
+    method: 'get',
+    response(config) {
+      const { body } = config;
+      return {
+        code: 200,
+        messages: 'success',
+        data: {
+          stat: [
+            {
+              name: '选项1', count: 20
+            },
+            {
+              name: '选项2', count: 20
+            },
+            {
+              name: '选项3', count: 30
+            },
+            {
+              name: '选项4', count: 30
+            },
+          ]
+        },
+      };
+    },
+  },
 ];
 
 const getValue = (component) => {
