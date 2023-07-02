@@ -35,13 +35,11 @@ export const componentList = [
   },
   {
     fe_id: "c2",
-    type: 'questionTitle',
-    title: '标题',
+    type: 'questionParagraph',
     isHidden: false,
     isLocked: false,
     props: {
-      text: '一行标题',
-      level: 1,
+      text: '一行标题\n一行标题一行标题一行标题一行标题一行标题一行标题一行标题一行标题一行标题一行标题',
       isCenter: false,
     },
   },
@@ -100,7 +98,7 @@ export const componentList = [
     },
   },
   {
-    fe_id:"c7",
+    fe_id: "c7",
     type: 'questionCheckbox',
     title: '多选标题',
     isHidden: false,
